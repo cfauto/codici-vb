@@ -1,0 +1,63 @@
+
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        Dim usr As String = TextBox4.Text
+        Dim pass As String = TextBox3.Text
+
+        If usr = "" Then
+            MsgBox("Immetti un nome utente", MsgBoxStyle.Exclamation)
+        ElseIf pass = "" Then
+            MsgBox("Immetti una password", MsgBoxStyle.Exclamation)
+        ElseIf My.Computer.FileSystem.DirectoryExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\logindata\" & usr) Then
+            MsgBox("L'username è in uso da una altro utente", MsgBoxStyle.Exclamation)
+        ElseIf My.Computer.FileSystem.DirectoryExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\logindata\") = False Then
+            MkDir(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\logindata")
+        End If
+        MkDir(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\logindata\" & usr)
+
+        Dim passwriter As New System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\logindata\" & usr & "\pass.txt")
+        passwriter.Write(pass)
+        passwriter.Close()
+        MsgBox("Account creato con successo", MsgBoxStyle.Information)
+        TextBox4.Clear()
+        TextBox3.Clear()
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Ok.Click
+        Dim usr As String = TextBox1.Text
+        Dim pass As String = TextBox2.Text
+
+        If usr = "" Then
+            MsgBox("Immetti un nome utente", MsgBoxStyle.Exclamation)
+        ElseIf pass = "" Then
+            MsgBox("Immetti una password", MsgBoxStyle.Exclamation)
+        ElseIf My.Computer.FileSystem.DirectoryExists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\logindata\" & usr) = False Then
+            MsgBox("L'account non esiste,creane uno dalla sezione crea account", MsgBoxStyle.Exclamation)
+            TextBox1.Clear()
+            TextBox2.Clear()
+        Else
+            Dim loginpsw As String = My.Computer.FileSystem.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\logindata\" & usr & "\pass.txt")
+            If pass = loginpsw Then
+                MsgBox("Hai effettuato l'accesso")
+                TextBox1.Clear()
+                TextBox2.Clear()
+            Else
+                MsgBox("I dati sono incorretti", MsgBoxStyle.Critical)
+                TextBox1.Clear()
+                TextBox2.Clear()
+            End If
+        End If
+    End Sub
+
+    Private Sub TextBox1_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox1.KeyPress
+        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Enter) Then
+            Button1.PerformClick()
+        End If
+    End Sub
+
+    Private Sub TextBox2_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox2.KeyPress
+        If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Enter) Then
+            Button1.PerformClick()
+        End If
+    End Sub
+End Class

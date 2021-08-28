@@ -1,0 +1,35 @@
+Dim alltext As String = "", lineoftext As String = ""
+OpenFileDialog1.Filter = "All Files | *.*"
+OpenFileDialog1.ShowDialog()
+If OpenFileDialog1.FileName <> "" Then
+
+End If
+Try
+FileOpen(1, OpenFileDialog1.FileName, OpenMode.Input)
+
+Do Until EOF(1)
+lineoftext = LineInput(1)
+alltext = alltext & lineoftext & vbCrLf
+Loop
+TextBox1.Text = alltext
+Catch
+Finally
+FileClose()
+End Try
+
+
+
+
+
+If TextBox1.Text.Contains("Virus") Then
+MsgBox("File Pericoloso", MsgBoxStyle.Critical)
+Else
+MsgBox("File Non pericoloso")
+End If
+
+
+
+Private Sub Label1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label1.Click
+        System.Diagnostics.Process.Start("il sito che vuoi")
+    End Sub
+End Class
